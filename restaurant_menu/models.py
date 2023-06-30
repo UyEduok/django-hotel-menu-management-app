@@ -25,4 +25,4 @@ class Item(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return  self.meals
+        return self.meals

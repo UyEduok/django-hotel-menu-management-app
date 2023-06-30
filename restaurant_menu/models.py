@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 MEAL_TYPE = (
     ('starter', 'Starter'),
@@ -23,6 +24,14 @@ class Item(models.Model):
     status = models.IntegerField(choices=STATUS, default=1)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    slug = models.SlugField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.meals)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.meals
+
+    def get_absolute_url(self):
+        return reverse('menu_item', kwargs={'meal': self.slug})

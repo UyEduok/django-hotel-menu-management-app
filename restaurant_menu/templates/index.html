@@ -1,38 +1,36 @@
 {% extends 'base.html' %}
 {% block content %}
- <style>
-     /* Add this CSS style to remove the underline from links */
-      a{
-             text-decoration: none;
-      }
-</style>
-<div class="container">
-  <h1>Restaurant Menu</h1>
-    <ul class="list-group list-group-flush">
-        {% for meal in meals %}
-            <h2 class="pt-5">{{ meal.1 }}</h2>
-                {% for row in item_list %}
-                    {% if row.meal_type == meal.0 %}
-                        {% if row.status == 0 %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 pb-0">
-                            <a href="{% url 'menu_item' row.pk %}"><h3><del>{{ row.meals }}</del></h3></a>
-                            <span class="badge bg-primary rounded-pill">{{ row.price }}</span>
-                        </li>
-                        <li class="list-group-item pt-0">
-                            <p>{{ row.description }}</p>
-                        </li>
+    <div class="container">
+        <h1>Restaurant Menu</h1>
+        <ul class="list-group list-group-flush">
+            {% for meal in meals %}
+                <h2 class="pt-5">{{ meal.1 }}</h2>
+                {% for item in item_list %}
+                    {% if item.meal_type == meal.0 %}
+                        {% if item.status == 0 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 pb-0">
+                                <a href="{% url 'menu_item' meal=item.meals|slugify %}">
+                                    <h3><del>{{ item.meals }}</del></h3>
+                                </a>
+                                <span class="badge bg-primary rounded-pill">{{ item.price }}</span>
+                            </li>
+                            <li class="list-group-item pt-0">
+                                <p>{{ item.description }}</p>
+                            </li>
                         {% else %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center border-0 pb-0">
-                            <a href="{% url 'menu_item' row.pk %}"><h3>{{ row.meals }}</h3></a>
-                            <span class="badge bg-primary rounded-pill">{{ row.price }}</span>
-                        </li>
-                        <li class="list-group-item pt-0">
-                            <p>{{ row.description }}</p>
-                        </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 pb-0">
+                                <a href="{% url 'menu_item' meal=item.meals|slugify %}">
+                                    <h3>{{ item.meals }}</h3>
+                                </a>
+                                <span class="badge bg-primary rounded-pill">{{ item.price }}</span>
+                            </li>
+                            <li class="list-group-item pt-0">
+                                <p>{{ item.description }}</p>
+                            </li>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
-        {% endfor %}
-    </ul>
-</div>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock content %}
